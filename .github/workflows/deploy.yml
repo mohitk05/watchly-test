@@ -37,5 +37,5 @@ jobs:
         env:
           WATCHLY_API_KEY: ${{ secrets.WATCHLY_API_KEY }}
         run: |
-          echo Completing deployment
+          echo $WATCHLY_API_KEY
           watchly-cli deployment -k $WATCHLY_API_KEY
