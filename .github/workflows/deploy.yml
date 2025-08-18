@@ -35,5 +35,7 @@ jobs:
 
       # Runs a set of commands using the runners shell
       - name: Finish deployment
+        env:
+          WATCHLY_API_KEY: ${{ secrets.WATCHLY_API_KEY }}
         run: |
           watchly-cli deployment -k $WATCHLY_API_KEY
