@@ -36,4 +36,4 @@ jobs:
       - name: Finish deployment
         run: |
           echo Completing deployment
-          watchly-cli deployment
+          watchly-cli deployment -k ${{ secrets.WATCHLY_API_KEY }}
