@@ -28,7 +28,7 @@ jobs:
       # Runs a single command using the runners shell
       - name: Download watchly-cli
         run: |
-          curl -L https://github.com/getwatchly/watchly-cli/releases/download/v0.0.2/watchly-cli_0.0.1_linux_386.tar.gz > watchly-cli.tar.gz
+          curl -L https://github.com/getwatchly/watchly-cli/releases/download/v0.0.2/watchly-cli_0.0.2_linux_386.tar.gz > watchly-cli.tar.gz
           tar -xzf watchly-cli.tar.gz
           cp watchly-cli /usr/local/bin
 
