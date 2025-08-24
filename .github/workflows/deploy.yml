@@ -27,15 +27,25 @@ jobs:
       - uses: actions/checkout@v4
 
       # Runs a single command using the runners shell
-      - name: Download watchly-cli
+      - name: Download watchly-cli & start deployment
         run: |
-          curl -L https://github.com/getwatchly/watchly-cli/releases/download/v0.0.5/watchly-cli_0.0.5_linux_386.tar.gz > watchly-cli.tar.gz
+          curl -L https://github.com/getwatchly/watchly-cli/releases/download/v0.0.6/watchly-cli_0.0.6_linux_386.tar.gz > watchly-cli.tar.gz
           tar -xzf watchly-cli.tar.gz
           cp watchly-cli /usr/local/bin
 
-      # Runs a set of commands using the runners shell
+      - name: Start deployment
+        env:
+          WATCHLY_API_KEY: ${{ secrets.WATCHLY_API_KEY }}
+        run: |
+          watchly-cli deployment start -k $WATCHLY_API_KEY
+
+      - name: Deploy
+        run: |
+          sleep 10
+          echo Deployed
+
       - name: Finish deployment
         env:
           WATCHLY_API_KEY: ${{ secrets.WATCHLY_API_KEY }}
         run: |
-          watchly-cli deployment -k $WATCHLY_API_KEY
+          watchly-cli deployment finish -k $WATCHLY_API_KEY -s successful
