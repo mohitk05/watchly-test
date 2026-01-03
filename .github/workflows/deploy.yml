@@ -1,51 +1,26 @@
-# This is a basic workflow to help you get started with Actions
-
 name: CI
 
-# Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+    branches:
+      - main
 
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
-
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  build:
-    # The type of runner that the job will run on
+  deploy:
     runs-on: ubuntu-latest
-    environment: ci
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v4
-
-      # Runs a single command using the runners shell
-      - name: Download watchly-cli & start deployment
+      - name: Install Watchly CLI and notify of deployment start
         run: |
-          curl -L https://github.com/getwatchly/watchly-cli/releases/download/v0.0.9/watchly-cli_0.0.9_linux_386.tar.gz > watchly-cli.tar.gz
-          tar -xzf watchly-cli.tar.gz
-          cp watchly-cli /usr/local/bin
-
-      - name: Start deployment
+          curl https://www.watchly.dev/cli | WATCHLY_CLI_VERSION=0.0.17 sh
+          watchly-cli deployment start
         env:
           WATCHLY_API_KEY: ${{ secrets.WATCHLY_API_KEY }}
-        run: |
-          watchly-cli deployment start -k $WATCHLY_API_KEY
+          RELEASE_TAG: ${{ github.ref_name }} # optional - a release tag environment variable
 
       - name: Deploy
-        run: |
-          sleep 10
-          echo Deployed
+        run: echo "Your deployment steps ..."
 
-      - name: Finish deployment
+      - name: Notify Watchly of deployment completion
+        run: watchly-cli deployment finish --status=successful
         env:
           WATCHLY_API_KEY: ${{ secrets.WATCHLY_API_KEY }}
-        run: |
-          watchly-cli deployment finish -k $WATCHLY_API_KEY -s successful
