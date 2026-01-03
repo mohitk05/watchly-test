@@ -7,6 +7,7 @@ on:
 
 jobs:
   deploy:
+    environment: ci
     runs-on: ubuntu-latest
     steps:
       - name: Install Watchly CLI and notify of deployment start
